@@ -97,6 +97,27 @@ jobs:
             $(aws ecr get-login --no-include-email --region ap-northeast-1)
             docker build -t $CONTAINER_IMAGE:$CIRCLE_SHA1 .
             docker push $CONTAINER_IMAGE:$CIRCLE_SHA1
+  
+  deployment:
+    docker:
+      - image: circleci/python:3.7.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install awscli
+          command: |
+            sudo pip install awscli
+            aws --version
+      - run:
+          name: Rolling update
+          command: |
+            ecs-cli compose \
+              --file .circleci/deployment/app-service.yml \
+              --ecs-params .circleci/deployment/ecs-params.yml \
+              --project-name ci-cd-rails-app-service \
+              --cluster-config ci-cd-rails \
+              service up
 
 workflows:
   version: 2
@@ -108,6 +129,12 @@ workflows:
           requires:
             - test
             - code-check
+          filters:
+            branches:
+              only: production
+      - deployment:
+          requires:
+            - release-image
           filters:
             branches:
               only: production

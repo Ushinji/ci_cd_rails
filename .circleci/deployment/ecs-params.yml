@@ -1,0 +1,8 @@
+version: 1
+task_definition:
+  task_role_arn: $TASK_ROLE_ARN
+  services:
+    ci-cd-rails-app:
+      cpu_shares: 250
+      mem_limit: 524288000 # 500MB
+      mem_reservation: 262144000 # 250MB
