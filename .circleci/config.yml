@@ -1,0 +1,87 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_USER: root
+          DATABASE_PASSWORD: password
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+         name: 'wait for db'
+         command: dockerize -wait tcp://$DATABASE_HOST:3306 -timeout 1m
+      - run: 
+          name: DB migrate
+          command: | 
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+      - run:
+          name: Run test
+          command: bundle exec rspec
+  
+  code-check:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_USER: root
+          DATABASE_PASSWORD: password
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+         name: 'wait for db'
+         command: dockerize -wait tcp://$DATABASE_HOST:3306 -timeout 1m
+      - run: 
+          name: DB migrate
+          command: | 
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+      - run:
+          name: Run rubocop
+          command: bundle exec rubocop
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - test
+      - code-check
