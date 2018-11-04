@@ -1,0 +1,10 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml
+
+### Override rubcop-github ###
+
+GitHub/RailsControllerRenderPathsExist:
+  # MEMO:templateがあるのにエラー。修正の方法が分からなかった。
+  Enabled: false
