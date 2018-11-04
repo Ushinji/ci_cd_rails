@@ -100,10 +100,10 @@ workflows:
     jobs:
       - test
       - code-check
-      - release-image
-        requires:
-          - test
-          - code-check
-        filters:
-          branches:
-            only: production
+      - release-image:
+          requires:
+            - test
+            - code-check
+          filters:
+            branches:
+              only: production
