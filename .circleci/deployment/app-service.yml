@@ -1,0 +1,15 @@
+version: "3"
+services:
+  ci-cd-rails-app:
+    image: $CONTAINER_IMAGE:$CIRCLE_SHA1
+    command: [ "bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0" ]
+    ports:
+      - "3000"
+    environment:
+      RAILS_ENV: production
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ci-cd-rails-app
+        awslogs-region: ap-northeast-1
+        awslogs-stream-prefix: services
