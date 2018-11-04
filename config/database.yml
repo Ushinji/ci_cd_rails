@@ -51,6 +51,4 @@ test:
 #
 production:
   <<: *default
-  database: app_production
-  username: app
-  password: <%= ENV["DATABASE_PASSWORD"] %>
+  database: ci_cd_rails
