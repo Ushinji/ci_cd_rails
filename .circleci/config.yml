@@ -93,7 +93,7 @@ jobs:
             aws --version
       - run:
           name: Push release docker-image
-          command:
+          command: |
             $(aws ecr get-login --no-include-email --region ap-northeast-1)
             docker build -t $CONTAINER_IMAGE:$CIRCLE_SHA1 .
             docker push $CONTAINER_IMAGE:$CIRCLE_SHA1
