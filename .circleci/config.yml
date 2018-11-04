@@ -81,7 +81,7 @@ jobs:
 
 workflows:
   version: 2
-  deploy-to-ecs:
+  workflow:
     jobs:
       - test
       - code-check
