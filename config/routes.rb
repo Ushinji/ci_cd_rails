@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   get "health_check", to: "health_check#index", as: "health_check"
 
+  root "sessions#index"
+
   resources :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
