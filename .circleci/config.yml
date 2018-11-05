@@ -54,7 +54,7 @@ jobs:
   
   code-check:
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: $CONTAINER_IMAGE:test-$CIRCLE_SHA1
         environment:
           RAILS_ENV: test
           DATABASE_HOST: 127.0.0.1
