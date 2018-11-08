@@ -1,24 +1,68 @@
-# README
+# リポジトリを取得
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+$ git clone git@github.com:Ushinji/ci_cd_rails.git
+$ cd path/to/repo
+```
 
-Things you may want to cover:
+## 起動手順
 
-* Ruby version
+イメージのビルド
 
-* System dependencies
+```
+$ docker-compose build
+```
 
-* Configuration
+bundle install
 
-* Database creation
+```
+$ docker-compose run --rm app bundle install
+```
 
-* Database initialization
+DBマイグレーション
 
-* How to run the test suite
+```
+$ docker-compose run --rm app bundle exec rails db:create
 
-* Services (job queues, cache servers, search engines, etc.)
+$ docker-compose run --rm app bundle exec rails db:migrate
+```
 
-* Deployment instructions
+コンテナー起動
 
-* ...
+```
+$ docker-compose up -d
+```
+
+http://localhost:3000 にアクセスして、アプリが表示されることを確認。
+
+
+コンテナーの状況を確認
+
+```
+$ docker-compose ps
+```
+
+# rubocop(linter)
+
+コードをチェック
+
+```
+$ docker-compose run --rm app bundle exec rubocop
+```
+
+自動整形
+
+```
+$ docker-compose run --rm app bundle exec rubocop -a
+```
+
+# Circle CIの設定
+
+CircleCiのEnvironment Variablesに、以下の環境変数を設定
+
+|変数名  |説明  |
+|---|---|
+|`AWS_ACCESS_KEY_ID`  |AWS_ACCESS_KEY_ID  |
+|`AWS_SECRET_ACCESS_KEY`  |AWS_SECRET_ACCESS_KEY  |
+|`CONTAINER_IMAGE`  |イメージプッシュ先のECRのブランチURL  |
+
