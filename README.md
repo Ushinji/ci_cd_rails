@@ -42,6 +42,12 @@ http://localhost:3000 にアクセスして、アプリが表示されること�
 $ docker-compose ps
 ```
 
+# テストの実行
+
+```
+$ docker-compose exec -e "RAILS_ENV=test" app bundle exec rspec .
+```
+
 # rubocop(linter)
 
 コードをチェック
