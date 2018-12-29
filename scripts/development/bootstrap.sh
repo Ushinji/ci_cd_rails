@@ -1,6 +1,10 @@
-docker-compose run --rm app rails new . -B -T --database=mysql -f
+#!/bin/sh
+
+echo "### Development environment Bootstrap ###"
+echo ""
+
+docker-compose build
 docker-compose run --rm app bundle install
-docker-compose run --rm app cp template/database.yml config/database.yml
 docker-compose run --rm app bundle exec rails db:create
 docker-compose run --rm app bundle exec rails db:migrate
 

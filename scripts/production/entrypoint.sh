@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -e
+#!/bin/sh -e
 
 if [ "$RAILS_ENV" != "production" ] ; then
   echo "RAILS_ENV is not production"

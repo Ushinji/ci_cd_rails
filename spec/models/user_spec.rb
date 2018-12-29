@@ -3,18 +3,9 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  before do
-    @user = build(:user)
-  end
-
   describe "バリデーション" do
-    xit "nameとemailどちらも値が設定されていれば、OK" do
-    end
-
-    xit "nameが空だとNG" do
-    end
-
-    xit "emailが空だとNG" do
-    end
+    subject { build(:user) }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:email) }
   end
 end
