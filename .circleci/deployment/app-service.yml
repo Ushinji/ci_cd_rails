@@ -6,9 +6,9 @@ services:
     ports:
       - "3000"
     environment:
-      RAILS_ENV: production
-      RAILS_SERVE_STATIC_FILES: true
-      RAILS_LOG_TO_STDOUT: true
+      RAILS_ENV: "production"
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
     logging:
       driver: awslogs
       options:
