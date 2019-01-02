@@ -19,5 +19,3 @@ COPY Gemfile.lock $APP_ROOT
 RUN bundle install --jobs=4 --deployment
 COPY . $APP_ROOT
 RUN RAILS_ENV=production bundle exec rake assets:precompile assets:clean
-
-ENTRYPOINT ["./scripts/production/entrypoint.sh"]
